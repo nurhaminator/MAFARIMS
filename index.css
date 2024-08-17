@@ -1,0 +1,66 @@
+
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    color:#198754 ;
+}
+.logo{
+    font-weight: 800;
+}
+.but{
+    width: 80px;
+    border-radius: 20px;
+}
+section{
+    height: 100vh;
+}
+.bg-light{
+    background-color: rgb(201, 255, 201);
+}
+video{
+    z-index:-1;
+    height: 100vh;
+    object-fit: cover;
+}
+.tit{
+    font-weight:800;
+    font-size: 40px; 
+}
+.oks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.blob {  background-color: white ;
+        height: 400px;
+        color: #198754;
+        padding: 20px; 
+        box-shadow: inset black 20px;
+}
+#login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nvcon{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.feat{
+    margin:5rem;
+}
+footer {
+    background-color: #198754;
+    color: white;
+    padding: 20px 0;
+}
+.wew{
+    margin-top: -30px;
+    margin-left: -40px;
+}
+.move{
+    transform: scaleX(-1);z-index: -1;
+}
+.road{ 
+    margin-top: -5px;
+    border:  dotted 3px white;
+    background-color: black;
+} 
