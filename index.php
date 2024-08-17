@@ -51,23 +51,20 @@
         <div class="row">
           <div class="col-md-7" d-flex">
             <h1 class="tit text-success">MAFAR INVENTORY 🛠️<br />MANAGEMENT SYSTEM</h1>
-
-
-            <div class="col feat">
-              <h2>
-                🛠️ Inventory Management <br>
-                📦 Efficient Transfer Tracking <br>
-                📈 Real-Time Confirmation <br>
-                📊 Detailed Reporting</h2>
+             <div class="col feat">
+                <h2>
+                  🛠️ Inventory Management <br>
+                  📦 Efficient Transfer Tracking <br>
+                  📈 Real-Time Confirmation <br>
+                  📊 Detailed Reporting</h2>
+              </div>
             </div>
-          </div>
-          <div class="col-md-5">
-            <img src="assets/invenotry-grow.gif" class="wew" height="450px" alt="">
+            <div class="col-md-5">
+              <img src="assets/invenotry-grow.gif" class="wew" height="450px" alt="">
+            </div>
           </div>
         </div>
       </div>
-
-    </div>
     </div>
   </section>
 
