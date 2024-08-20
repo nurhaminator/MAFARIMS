@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Please enter both username and password.";
     } else {
         // Query to check username and fetch the hashed password
-        $sql = "SELECT user_id, username, password, role FROM Users WHERE username = '$username'";
+        $sql = "SELECT user_id, username, full_name, password, role FROM Users WHERE username = '$username'";
         $result = mysqli_query($conn, $sql);
         
         if ($result && mysqli_num_rows($result) == 1) {
@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["loggedin"] = true;
                 $_SESSION["user_id"] = $row['user_id'];
                 $_SESSION["username"] = $row['username'];
+                $_SESSION["full_name"] = $row['full_name'];
                 $_SESSION["role"] = $row['role'];
 
                 // Redirect based on user role
@@ -38,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 exit;
             } else {
-                
                 $error = "Invalid password.";
             }
         } else {
@@ -49,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_close($conn);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
