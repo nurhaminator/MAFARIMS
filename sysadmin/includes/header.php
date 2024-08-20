@@ -21,6 +21,17 @@
             <img src="../assets/logo.png" alt="" width="60" height="60" class="d-inline-block align-text-center" />
             MAFARIMS
         </a>
+        <div>
+            
+        <button type="button" class="btn position-relative">
+        <a href="#">
+                <img src="https://icones.pro/wp-content/uploads/2022/02/icone-de-cloche-jaune.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            </a>
+        <span class="position-absolute top-0 start translate-middle badge rounded-pill bg-danger">
+            0
+            <span class="visually-hidden">unread notifications</span>
+        </span>
+        </button>
         <div class="btn-group">
             <a href="#">
                 <img src="../assets/defaultpic.png" alt="" width="32" height="32" class="rounded-circle me-2">
@@ -32,6 +43,7 @@
                 <li><a class="dropdown-item" href="#">Profile Settings</a></li>
                 <li><a class="dropdown-item" href="../logout.php">Logout</a></li>
             </ul>
+        </div>
         </div>
     </nav>
 
