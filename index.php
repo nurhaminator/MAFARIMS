@@ -1,3 +1,53 @@
+<?php
+session_start();
+require 'includes/dbcon.php'; // Include your database connection file
+
+$error = ""; // Initialize error message variable
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    if (empty($username) || empty($password)) {
+        $error = "Please enter both username and password.";
+    } else {
+        // Query to check username and fetch the hashed password
+        $sql = "SELECT user_id, username, password, role FROM Users WHERE username = '$username'";
+        $result = mysqli_query($conn, $sql);
+        
+        if ($result && mysqli_num_rows($result) == 1) {
+            $row = mysqli_fetch_assoc($result);
+            if (password_verify($password, $row['password'])) {
+                // Set session variables
+                $_SESSION["loggedin"] = true;
+                $_SESSION["user_id"] = $row['user_id'];
+                $_SESSION["username"] = $row['username'];
+                $_SESSION["role"] = $row['role'];
+
+                // Redirect based on user role
+                if ($row['role'] == 'SystemAdmin') {
+                    header("Location: sysadmin/dashboard.php");
+                } elseif ($row['role'] == 'RegionalUser') {
+                    header("Location: regional_user_dashboard.php");
+                } elseif ($row['role'] == 'ProvincialUser') {
+                    header("Location: provincial_user_dashboard.php");
+                } elseif ($row['role'] == 'MunicipalUser') {
+                    header("Location: municipal_user_dashboard.php");
+                } else {
+                    header("Location: error.php");
+                }
+                exit;
+            } else {
+                $error = "Invalid password.";
+            }
+        } else {
+            $error = "No account found with that username.";
+        }
+    }
+
+    mysqli_close($conn);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,18 +114,21 @@
           <img src="assets/logo.png" height="350px" alt="">
         </div>
         <div class="col-md-4 blob">
-          <h2 class="text-center fw-bolder text-success mt-5">Login</h2><br>
-          <form>
+        <h2>Login</h2>
+        <?php if(!empty($error)): ?>
+            <div class="alert alert-danger" role="alert"><?php echo $error; ?></div>
+        <?php endif; ?>
+        <form action="index.php" method="post">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInput" placeholder="@nurhaminator" />
-              <label for="floatingInput">Username</label>
+                <input type="text" class="form-control" name="username" id="floatingInput" placeholder="@nurhaminator" required />
+                <label for="floatingInput">Username</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
-              <label for="floatingPassword">Password</label>
+                <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password" required />
+                <label for="floatingPassword">Password</label>
             </div>
-            <button type="submit" class="btn btn-success but w-100">Submit</button>
-          </form>
+            <button type="submit" class="btn btn-success w-100">Submit</button>
+        </form>
         </div>
       </div>
     </div>
