@@ -72,7 +72,7 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
             background-color: #00bf63;
             border: none;
         }
-        
+
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: #d8f0cc;
             color: white; /* Ensure text is readable */
@@ -82,6 +82,16 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
         .table thead th,
         .table tbody tr:nth-of-type(even) {
             background-color: white;
+        }
+
+        .form-inline {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-inline .form-control,
+        .form-inline .btn {
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -96,23 +106,33 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
                 <li class="breadcrumb-item active" aria-current="page">User Management</li>
             </ol>
 
-            <div><!-- User List -->
-                <h3 class="mt-4">Existing Users</h3>
+            <div class="d-flex justify-content-between align-items-center mb-3">
                 <!-- Buttons to trigger modals -->
-                <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
-                <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#addLocationModal">Add Location</button>
+                <div class="form-inline">
+                    <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
+                    <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#addLocationModal">Add Location</button>
+                </div>
+                <!-- Search and Filter -->
+                <div class="form-inline">
+                    <input type="text" class="form-control" id="searchUser" placeholder="Search User">
+                    <select id="filterRole" class="form-select">
+                        <option value="">Filter by Role</option>
+                        <option value="ProvincialUser">Province User</option>
+                        <option value="MunicipalUser">Municipal User</option>
+                    </select>
+                </div>
             </div>
+
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Username</th>
                         <th>Role</th>
                         <th>Location</th>
-                        <th>Created At</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="userTableBody">
                     <?php foreach ($users as $user): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($user['username']); ?></td>
@@ -137,11 +157,13 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
                                     }
                                 }
 
+
                                 echo $province_name ? $province_name : '';
                                 echo $municipality_name ? ', ' . $municipality_name : '';
+                                
+
                                 ?>
                             </td>
-                            <td><?php echo htmlspecialchars($user['created_at']); ?></td>
                             <td>
                                 <!-- Add buttons for actions like block or edit -->
                                 <button class="btn btn-warning btn-sm">Edit</button>
@@ -191,7 +213,7 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="mb-3" id="municipalityField" style="display: none;">
+                        <div class="mb-3" id="municipalityField">
                             <label for="municipality" class="form-label">Municipality</label>
                             <select id="municipality" name="municipality_id" class="form-select">
                                 <option value="" disabled selected>Select a Municipality</option>
@@ -202,7 +224,7 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success rounded-pill">Add User</button>
+                        <button type="submit" class="btn btn-success">Add User</button>
                     </form>
                 </div>
             </div>
@@ -228,14 +250,16 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
                                 <option value="municipality">Municipality</option>
                             </select>
                         </div>
-                        <div class="mb-3" id="provinceFields" style="display: none;">
+                        <div class="mb-3" id="provinceNameField">
                             <label for="province_name" class="form-label">Province Name</label>
                             <input type="text" class="form-control" id="province_name" name="province_name">
                         </div>
-                        <div class="mb-3" id="municipalityFields" style="display: none;">
+                        <div class="mb-3" id="municipalityNameField">
                             <label for="municipality_name" class="form-label">Municipality Name</label>
                             <input type="text" class="form-control" id="municipality_name" name="municipality_name">
-                            <label for="province_id" class="form-label">Select Province</label>
+                        </div>
+                        <div class="mb-3" id="provinceSelectField">
+                            <label for="province_id" class="form-label">Province</label>
                             <select id="province_id" name="province_id" class="form-select">
                                 <option value="" disabled selected>Select a Province</option>
                                 <?php foreach ($provinces as $province): ?>
@@ -245,7 +269,7 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success rounded-pill">Add Location</button>
+                        <button type="submit" class="btn btn-success">Add Location</button>
                     </form>
                 </div>
             </div>
@@ -254,16 +278,17 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Show/Hide fields based on role selection
-        document.getElementById('role').addEventListener('change', function () {
-            const role = this.value;
-            const provinceField = document.getElementById('provinceField');
-            const municipalityField = document.getElementById('municipalityField');
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleSelect = document.getElementById('role');
+        const provinceField = document.getElementById('provinceField');
+        const municipalityField = document.getElementById('municipalityField');
+        const provinceSelectField = document.getElementById('provinceSelectField');
 
-            if (role === 'ProvincialUser') {
+        roleSelect.addEventListener('change', function() {
+            if (roleSelect.value === 'ProvincialUser') {
                 provinceField.style.display = 'block';
                 municipalityField.style.display = 'none';
-            } else if (role === 'MunicipalUser') {
+            } else if (roleSelect.value === 'MunicipalUser') {
                 provinceField.style.display = 'block';
                 municipalityField.style.display = 'block';
             } else {
@@ -272,24 +297,101 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
             }
         });
 
-        // Show/Hide fields based on location type selection
-        document.getElementById('location_type').addEventListener('change', function () {
+        document.getElementById('location_type').addEventListener('change', function() {
             const locationType = this.value;
-            const provinceFields = document.getElementById('provinceFields');
-            const municipalityFields = document.getElementById('municipalityFields');
-
             if (locationType === 'province') {
-                provinceFields.style.display = 'block';
-                municipalityFields.style.display = 'none';
+                document.getElementById('provinceNameField').style.display = 'block';
+                document.getElementById('municipalityNameField').style.display = 'none';
+                provinceSelectField.style.display = 'none';
             } else if (locationType === 'municipality') {
-                provinceFields.style.display = 'none';
-                municipalityFields.style.display = 'block';
+                document.getElementById('provinceNameField').style.display = 'none';
+                document.getElementById('municipalityNameField').style.display = 'block';
+                provinceSelectField.style.display = 'block';
             } else {
-                provinceFields.style.display = 'none';
-                municipalityFields.style.display = 'none';
+                document.getElementById('provinceNameField').style.display = 'none';
+                document.getElementById('municipalityNameField').style.display = 'none';
+                provinceSelectField.style.display = 'none';
             }
         });
-    </script>
+
+        // JavaScript for search and filter functionality
+        document.getElementById('searchUser').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#userTableBody tr');
+            rows.forEach(row => {
+                const username = row.children[0].textContent.toLowerCase();
+                const role = row.children[1].textContent.toLowerCase();
+                const location = row.children[2].textContent.toLowerCase();
+                if (username.includes(searchTerm) || role.includes(searchTerm) || location.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        document.getElementById('filterRole').addEventListener('change', function() {
+            const selectedRole = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#userTableBody tr');
+            rows.forEach(row => {
+                const role = row.children[1].textContent.toLowerCase();
+                if (selectedRole === '' || role === selectedRole) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $('#role').on('change', function() {
+            var role = $(this).val();
+            if (role === 'ProvincialUser') {
+                $('#provinceField').show();
+                $('#municipalityField').hide();
+            } else if (role === 'MunicipalUser') {
+                $('#provinceField').show();
+                $('#municipalityField').show();
+            } else {
+                $('#provinceField').hide();
+                $('#municipalityField').hide();
+            }
+        });
+
+        $('#province').on('change', function() {
+            var provinceId = $(this).val();
+            if (provinceId) {
+                $.ajax({
+                    url: 'fetch_municipalities.php',
+                    type: 'POST',
+                    data: { province_id: provinceId },
+                    success: function(data) {
+                        $('#municipality').html(data);
+                    }
+                });
+            } else {
+                $('#municipality').html('<option value="" disabled selected>Select a Municipality</option>');
+            }
+        });
+
+        $('#location_type').on('change', function() {
+            var locationType = $(this).val();
+            if (locationType === 'province') {
+                $('#locationNameField').show();
+                $('#provinceSelectionField').hide();
+                $('#location_name').attr('name', 'province_name');
+                $('#location_name').attr('placeholder', 'Enter Province Name');
+            } else if (locationType === 'municipality') {
+                $('#locationNameField').show();
+                $('#provinceSelectionField').show();
+                $('#location_name').attr('name', 'municipality_name');
+                $('#location_name').attr('placeholder', 'Enter Municipality Name');
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>
