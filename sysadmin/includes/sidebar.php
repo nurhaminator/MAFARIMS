@@ -28,7 +28,7 @@
 
         .sidebar a i {
             margin-right: 10px;
-            color:#00bf63;
+            color: #00bf63;
         }
 
         .sidebar a.active {
@@ -36,6 +36,10 @@
             background-color: #00bf63;
             color: white;
             border-radius: 20px;
+        }
+
+        .sidebar a.active i {
+            color: white; /* Change icon color when active */
         }
 
         .sidebar .nav-item {
@@ -64,22 +68,25 @@
         <h4 class="text-center text-success p-2 m-0"><?php echo $_SESSION['full_name'] ?></h4><br>
         <div class="container">
             <div class="nav flex-column">
-                <a class="nav-link active" href="dashboard.php">
+                <?php
+                $current_page = basename($_SERVER['PHP_SELF']);
+                ?>
+                <a class="nav-link <?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>" href="dashboard.php">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
-                <a class="nav-link" href="inventory_management.php">
-                    <i class="fas fa-boxes"></i> Inventory Management
-                </a>
-                <a class="nav-link" href="user_management.php">
+                <a class="nav-link <?php echo ($current_page == 'usermanagement.php') ? 'active' : ''; ?>" href="./usermanagement.php">
                     <i class="fas fa-users"></i> User Management
                 </a>
-                <a class="nav-link" href="item_requests.php">
+                <a class="nav-link <?php echo ($current_page == 'inventory_management.php') ? 'active' : ''; ?>" href="inventory_management.php">
+                    <i class="fas fa-boxes"></i> Inventory Management
+                </a>
+                <a class="nav-link <?php echo ($current_page == 'item_requests.php') ? 'active' : ''; ?>" href="item_requests.php">
                     <i class="fas fa-clipboard-list"></i> Item Requests
                 </a>
-                <a class="nav-link" href="distribution_management.php">
+                <a class="nav-link <?php echo ($current_page == 'distribution_management.php') ? 'active' : ''; ?>" href="distribution_management.php">
                     <i class="fas fa-shipping-fast"></i> Distribution Management
                 </a>
-                <a class="nav-link" href="reports_generation.php">
+                <a class="nav-link <?php echo ($current_page == 'reports_generation.php') ? 'active' : ''; ?>" href="reports_generation.php">
                     <i class="fas fa-chart-line"></i> Reports Generation
                 </a>
             </div>

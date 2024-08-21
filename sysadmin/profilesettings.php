@@ -62,7 +62,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'SystemAdmin') {
                 <h3>Profile Settings</h3>
                 <form>
                     <div class="form-group">
-                        <label for="fullName">Full Name:</label>
+                        <label for="fullName"><?php echo $_SESSION['full_name'] ?></label>
                         <input type="text" class="form-control" id="fullName" value="<?php echo $_SESSION['full_name']; ?>" readonly>
                     </div>
                     <div class="form-group">
@@ -75,7 +75,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'SystemAdmin') {
 
             <!-- Change Password Modal -->
             <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
