@@ -26,9 +26,15 @@
             padding: 10px;
         }
 
+        .sidebar a:hover {
+            color: #00bf63;
+        }
+
         .sidebar a i {
             margin-right: 10px;
             color: #00bf63;
+            margin-right: 10px;
+            width: 15px;
         }
 
         .sidebar a.active {
@@ -72,7 +78,7 @@
                 $current_page = basename($_SERVER['PHP_SELF']);
                 ?>
                 <a class="nav-link <?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>" href="dashboard.php">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                    <i class="fas fa-tachometer-alt"></i>  Dashboard
                 </a>
                 <a class="nav-link <?php echo ($current_page == 'usermanagement.php') ? 'active' : ''; ?>" href="./usermanagement.php">
                     <i class="fas fa-users"></i> User Management
@@ -89,6 +95,10 @@
                 <a class="nav-link <?php echo ($current_page == 'reports_generation.php') ? 'active' : ''; ?>" href="reports_generation.php">
                     <i class="fas fa-chart-line"></i> Reports Generation
                 </a>
+                <a class="nav-link <?php echo ($current_page == 'auditlogs.php') ? 'active' : ''; ?>" href="auditlogs.php">
+                    <i class="fas fa-history"></i> Check Audit Logs
+                </a>
+            </div>
             </div>
         </div>
         <br>

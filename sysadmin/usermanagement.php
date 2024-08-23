@@ -75,7 +75,8 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
 
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: #d8f0cc;
-            color: white; /* Ensure text is readable */
+            color: white;
+            /* Ensure text is readable */
         }
 
         /* Ensure the text in the header and even rows is not affected */
@@ -114,7 +115,7 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
                 </div>
                 <!-- Search and Filter -->
                 <div class="form-inline">
-                    <input type="text" class="form-control" id="searchUser" placeholder="Search User">
+                    <input type="text" class="form-control" id="searchUser" placeholder="Search...">
                     <select id="filterRole" class="form-select">
                         <option value="">Filter by Role</option>
                         <option value="ProvincialUser">Province User</option>
@@ -160,7 +161,7 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
 
                                 echo $province_name ? $province_name : '';
                                 echo $municipality_name ? ', ' . $municipality_name : '';
-                                
+
 
                                 ?>
                             </td>
@@ -278,119 +279,127 @@ $municipalities = $conn->query("SELECT municipality_id, municipality_name FROM m
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const roleSelect = document.getElementById('role');
-        const provinceField = document.getElementById('provinceField');
-        const municipalityField = document.getElementById('municipalityField');
-        const provinceSelectField = document.getElementById('provinceSelectField');
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleSelect = document.getElementById('role');
+            const provinceField = document.getElementById('provinceField');
+            const municipalityField = document.getElementById('municipalityField');
+            const provinceSelectField = document.getElementById('provinceSelectField');
 
-        roleSelect.addEventListener('change', function() {
-            if (roleSelect.value === 'ProvincialUser') {
-                provinceField.style.display = 'block';
-                municipalityField.style.display = 'none';
-            } else if (roleSelect.value === 'MunicipalUser') {
-                provinceField.style.display = 'block';
-                municipalityField.style.display = 'block';
-            } else {
-                provinceField.style.display = 'none';
-                municipalityField.style.display = 'none';
-            }
-        });
-
-        document.getElementById('location_type').addEventListener('change', function() {
-            const locationType = this.value;
-            if (locationType === 'province') {
-                document.getElementById('provinceNameField').style.display = 'block';
-                document.getElementById('municipalityNameField').style.display = 'none';
-                provinceSelectField.style.display = 'none';
-            } else if (locationType === 'municipality') {
-                document.getElementById('provinceNameField').style.display = 'none';
-                document.getElementById('municipalityNameField').style.display = 'block';
-                provinceSelectField.style.display = 'block';
-            } else {
-                document.getElementById('provinceNameField').style.display = 'none';
-                document.getElementById('municipalityNameField').style.display = 'none';
-                provinceSelectField.style.display = 'none';
-            }
-        });
-
-        // JavaScript for search and filter functionality
-        document.getElementById('searchUser').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#userTableBody tr');
-            rows.forEach(row => {
-                const username = row.children[0].textContent.toLowerCase();
-                const role = row.children[1].textContent.toLowerCase();
-                const location = row.children[2].textContent.toLowerCase();
-                if (username.includes(searchTerm) || role.includes(searchTerm) || location.includes(searchTerm)) {
-                    row.style.display = '';
+            roleSelect.addEventListener('change', function() {
+                if (roleSelect.value === 'ProvincialUser') {
+                    provinceField.style.display = 'block';
+                    municipalityField.style.display = 'none';
+                } else if (roleSelect.value === 'MunicipalUser') {
+                    provinceField.style.display = 'block';
+                    municipalityField.style.display = 'block';
                 } else {
-                    row.style.display = 'none';
+                    provinceField.style.display = 'none';
+                    municipalityField.style.display = 'none';
                 }
             });
-        });
 
-        document.getElementById('filterRole').addEventListener('change', function() {
-            const selectedRole = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#userTableBody tr');
-            rows.forEach(row => {
-                const role = row.children[1].textContent.toLowerCase();
-                if (selectedRole === '' || role === selectedRole) {
-                    row.style.display = '';
+            document.getElementById('location_type').addEventListener('change', function() {
+                const locationType = this.value;
+                if (locationType === 'province') {
+                    document.getElementById('provinceNameField').style.display = 'block';
+                    document.getElementById('municipalityNameField').style.display = 'none';
+                    provinceSelectField.style.display = 'none';
+                } else if (locationType === 'municipality') {
+                    document.getElementById('provinceNameField').style.display = 'none';
+                    document.getElementById('municipalityNameField').style.display = 'block';
+                    provinceSelectField.style.display = 'block';
                 } else {
-                    row.style.display = 'none';
+                    document.getElementById('provinceNameField').style.display = 'none';
+                    document.getElementById('municipalityNameField').style.display = 'none';
+                    provinceSelectField.style.display = 'none';
                 }
             });
-        });
-    });
 
-    $(document).ready(function() {
-        $('#role').on('change', function() {
-            var role = $(this).val();
-            if (role === 'ProvincialUser') {
-                $('#provinceField').show();
-                $('#municipalityField').hide();
-            } else if (role === 'MunicipalUser') {
-                $('#provinceField').show();
-                $('#municipalityField').show();
-            } else {
-                $('#provinceField').hide();
-                $('#municipalityField').hide();
-            }
-        });
-
-        $('#province').on('change', function() {
-            var provinceId = $(this).val();
-            if (provinceId) {
-                $.ajax({
-                    url: 'fetch_municipalities.php',
-                    type: 'POST',
-                    data: { province_id: provinceId },
-                    success: function(data) {
-                        $('#municipality').html(data);
+            // JavaScript for search and filter functionality
+            document.getElementById('searchUser').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#userTableBody tr');
+                rows.forEach(row => {
+                    const username = row.children[0].textContent.toLowerCase();
+                    const role = row.children[1].textContent.toLowerCase();
+                    const location = row.children[2].textContent.toLowerCase();
+                    if (username.includes(searchTerm) || role.includes(searchTerm) || location.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
                     }
                 });
-            } else {
-                $('#municipality').html('<option value="" disabled selected>Select a Municipality</option>');
-            }
+            });
+
+            document.getElementById('filterRole').addEventListener('change', function() {
+                const selectedRole = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#userTableBody tr');
+                rows.forEach(row => {
+                    const role = row.children[1].textContent.toLowerCase();
+                    if (selectedRole === '' || role === selectedRole) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
         });
 
-        $('#location_type').on('change', function() {
-            var locationType = $(this).val();
-            if (locationType === 'province') {
-                $('#locationNameField').show();
-                $('#provinceSelectionField').hide();
-                $('#location_name').attr('name', 'province_name');
-                $('#location_name').attr('placeholder', 'Enter Province Name');
-            } else if (locationType === 'municipality') {
-                $('#locationNameField').show();
-                $('#provinceSelectionField').show();
-                $('#location_name').attr('name', 'municipality_name');
-                $('#location_name').attr('placeholder', 'Enter Municipality Name');
-            }
+        $(document).ready(function() {
+            $('#role').on('change', function() {
+                var role = $(this).val();
+                if (role === 'ProvincialUser') {
+                    $('#provinceField').show();
+                    $('#municipalityField').hide();
+                } else if (role === 'MunicipalUser') {
+                    $('#provinceField').show();
+                    $('#municipalityField').show();
+                } else {
+                    $('#provinceField').hide();
+                    $('#municipalityField').hide();
+                }
+            });
+
+            $('#province').on('change', function() {
+                var provinceId = $(this).val();
+                if (provinceId) {
+                    $.ajax({
+                        url: 'fetch_municipalities.php',
+                        type: 'POST',
+                        data: {
+                            province_id: provinceId
+                        },
+                        success: function(data) {
+                            $('#municipality').html(data);
+                        }
+                    });
+                } else {
+                    $('#municipality').html('<option value="" disabled selected>Select a Municipality</option>');
+                }
+            });
+
+            $('#location_type').on('change', function() {
+                var locationType = $(this).val();
+                if (locationType === 'province') {
+                    $('#locationNameField').show();
+                    $('#provinceSelectionField').hide();
+                    $('#location_name').attr('name', 'province_name');
+                    $('#location_name').attr('placeholder', 'Enter Province Name');
+                } else if (locationType === 'municipality') {
+                    $('#locationNameField').show();
+                    $('#provinceSelectionField').show();
+                    $('#location_name').attr('name', 'municipality_name');
+                    $('#location_name').attr('placeholder', 'Enter Municipality Name');
+                }
+            });
         });
-    });
-</script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
 
 </body>
 

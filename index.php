@@ -25,6 +25,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["full_name"] = $row['full_name'];
                 $_SESSION["role"] = $row['role'];
 
+                // Insert login action into audit logs
+                $user_id = $row['user_id'];
+                $action_type = 'Login';
+                $table_name = 'Users';
+                $record_id = $row['user_id'];
+                $details = 'User logged in';
+                
+                $audit_sql = "INSERT INTO Audit_Logs (action_type, table_name, record_id, user_id, details) 
+                              VALUES ('$action_type', '$table_name', '$record_id', '$user_id', '$details')";
+                mysqli_query($conn, $audit_sql);
+
                 // Redirect based on user role
                 if ($row['role'] == 'SystemAdmin') {
                     header("Location: sysadmin/dashboard.php");

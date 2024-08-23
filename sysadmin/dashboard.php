@@ -59,7 +59,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'SystemAdmin') {
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="card card-custom mb-3 shadow">
+                            <div class="card card-custom mb-3 shadow-md">
                                 <div class="card-body">
                                     <h5 class="card-title">Active Users</h5>
                                     <div class="chart-container">
@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'SystemAdmin') {
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card card-custom mb-3 shadow">
+                            <div class="card card-custom mb-3 shadow-md">
                                 <div class="card-body">
                                     <h5 class="card-title">Inventory</h5>
                                     <div class="chart-container">
@@ -79,7 +79,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'SystemAdmin') {
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card card-custom mb-3 shadow">
+                            <div class="card card-custom mb-3 shadow-md">
                                 <div class="card-body">
                                     <h5 class="card-title">Requests</h5>
                                     <div class="chart-container">
@@ -89,7 +89,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'SystemAdmin') {
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="card card-custom mb-3 shadow">
+                            <div class="card card-custom mb-3 shadow-md">
                                 <div class="card-body">
                                     <h5 class="card-title">Distributions</h5>
                                     <div class="chart-container">

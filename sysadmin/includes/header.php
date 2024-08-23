@@ -14,6 +14,7 @@
 
         .dropdown-menu {
             background-color: #d8f0cc;
+            margin-left: 42px;
         }
     </style>
     </head>
@@ -25,9 +26,6 @@
                 MAFARIMS
             </a>
             <div>
-                <div class="hamburger">
-                    <i class="fas fa-bars"></i>
-                </div>
                 <button type="button" class="btn position-relative">
                     <a href="#">
                         <img src="https://icones.pro/wp-content/uploads/2022/02/icone-de-cloche-jaune.png" alt="" width="32" height="32" class="rounded-circle me-2">
