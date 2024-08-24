@@ -49,10 +49,19 @@ $machineriesResult = $conn->query($machineriesQuery);
         .btn-add {
             background-color: #00bf63;
             color: white;
+            margin-bottom: 20px;
         }
 
         .btn-add:hover {
             background-color: #00a354;
+        }
+
+        .btn-toggle {
+            margin-right: 10px;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -69,80 +78,91 @@ $machineriesResult = $conn->query($machineriesQuery);
                 <li class="breadcrumb-item active" aria-current="page">Inventory Management</li>
             </ol>
 
-            <h2>Agricultural Supplies</h2>
-            <button class="btn btn-add mb-3" data-bs-toggle="modal" data-bs-target="#addItemModal">Add Item</button>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Supply Name</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Unit</th>
-                        <th>Added By</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($agriculturalResult->num_rows > 0) {
-                        while ($row = $agriculturalResult->fetch_assoc()) {
-                            echo "<tr>
-                                <td>{$row['supply_id']}</td>
-                                <td>{$row['supply_name']}</td>
-                                <td>{$row['category']}</td>
-                                <td>{$row['quantity']}</td>
-                                <td>{$row['unit']}</td>
-                                <td>{$row['added_by']}</td>
-                                <td>{$row['created_at']}</td>
-                                <td>{$row['updated_at']}</td>
-                            </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='8'>No Agricultural Supplies found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+            <!-- Toggle Buttons -->
+            <div class="mb-3">
+                <button class="btn btn-primary btn-toggle" onclick="showSection('agricultural')">Show Agricultural Supplies</button>
+                <button class="btn btn-primary btn-toggle" onclick="showSection('machineries')">Show Machineries</button>
+            </div>
 
-            <h2>Machineries</h2>
-            <button class="btn btn-add mb-3" data-bs-toggle="modal" data-bs-target="#addItemModal">Add Item</button>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Machinery Name</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
-                        <th>Added By</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($machineriesResult->num_rows > 0) {
-                        while ($row = $machineriesResult->fetch_assoc()) {
-                            echo "<tr>
-                                <td>{$row['machinery_id']}</td>
-                                <td>{$row['machinery_name']}</td>
-                                <td>{$row['category']}</td>
-                                <td>{$row['quantity']}</td>
-                                <td>{$row['status']}</td>
-                                <td>{$row['added_by']}</td>
-                                <td>{$row['created_at']}</td>
-                                <td>{$row['updated_at']}</td>
-                            </tr>";
+            <!-- Agricultural Supplies Table -->
+            <div id="agriculturalSection" class="section">
+                <h2>Agricultural Supplies</h2>
+                <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addItemModal" data-category="Agricultural Supplies">Add Item</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Supply Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Unit</th>
+                            <th>Added By</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($agriculturalResult->num_rows > 0) {
+                            while ($row = $agriculturalResult->fetch_assoc()) {
+                                echo "<tr>
+                                    <td>{$row['supply_id']}</td>
+                                    <td>{$row['supply_name']}</td>
+                                    <td>{$row['category']}</td>
+                                    <td>{$row['quantity']}</td>
+                                    <td>{$row['unit']}</td>
+                                    <td>{$row['added_by']}</td>
+                                    <td>{$row['created_at']}</td>
+                                    <td>{$row['updated_at']}</td>
+                                </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='8'>No Agricultural Supplies found</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='8'>No Machineries found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
+            <!-- Machineries Table -->
+            <div id="machineriesSection" class="section hidden">
+                <h2>Machineries</h2>
+                <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addItemModal" data-category="Machineries">Add Item</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Machinery Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Added By</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($machineriesResult->num_rows > 0) {
+                            while ($row = $machineriesResult->fetch_assoc()) {
+                                echo "<tr>
+                                    <td>{$row['machinery_id']}</td>
+                                    <td>{$row['machinery_name']}</td>
+                                    <td>{$row['category']}</td>
+                                    <td>{$row['quantity']}</td>
+                                    <td>{$row['status']}</td>
+                                    <td>{$row['added_by']}</td>
+                                    <td>{$row['created_at']}</td>
+                                    <td>{$row['updated_at']}</td>
+                                </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='8'>No Machineries found</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -192,6 +212,19 @@ $machineriesResult = $conn->query($machineriesQuery);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
+    <script>
+        function showSection(section) {
+            // Hide all sections
+            document.getElementById('agriculturalSection').classList.add('hidden');
+            document.getElementById('machineriesSection').classList.add('hidden');
+            
+            // Show the selected section
+            document.getElementById(section + 'Section').classList.remove('hidden');
+        }
+        
+        // Optional: Show Agricultural Supplies by default
+        showSection('agricultural');
+    </script>
 </body>
 
 </html>
