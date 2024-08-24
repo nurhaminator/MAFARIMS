@@ -21,7 +21,7 @@
 
     <body>
         <nav class="navbar navbar">
-            <a class="navbar-brand fs-3 logo text-success" href="#">
+            <a class="navbar-brand fs-3 logo text-success" href="./dashboard.php">
                 <img src="../assets/logo.png" alt="" width="60" height="60" class="d-inline-block align-text-center" />
                 MAFARIMS
             </a>
